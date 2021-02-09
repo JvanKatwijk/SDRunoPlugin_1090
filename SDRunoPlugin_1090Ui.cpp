@@ -137,3 +137,7 @@ void	SDRunoPlugin_1090Ui::handle_fileButton		() {
 	m_parent. handle_fileButton ();
 }
 
+void	SDRunoPlugin_1090Ui::set_http			(const std::string &s) {
+	m_parent. set_http (s);
+}
+

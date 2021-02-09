@@ -318,6 +318,12 @@ void	SDRunoPlugin_1090Form::Setup () {
 
 	fileButton. caption ("file");
 	fileButton. events(). click ([&]() {handle_fileButton ();});
+
+	httpButton. push_back ("local");
+	httpButton. push_back ("http on");
+	httpButton. option (0);
+	httpButton. events(). selected ([&](const nana::arg_combox &ar_cbx){
+                        set_http (ar_cbx. widget. caption ());});
 }
 
 void	SDRunoPlugin_1090Form::SettingsButton_Click () {
@@ -362,5 +368,9 @@ void	SDRunoPlugin_1090Form::set_metricsMode		(const std::string &s) {
 
 void	SDRunoPlugin_1090Form::handle_fileButton	() {
 	m_parent. handle_fileButton ();
+}
+
+void	SDRunoPlugin_1090Form::set_http			(const std::string &s) {
+	m_parent. set_http (s);
 }
 

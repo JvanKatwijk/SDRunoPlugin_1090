@@ -47,7 +47,8 @@ public:
 	void	set_correction			(const std::string &);
 	void	set_displayMode			(const std::string &);
 	void	set_metricsMode			(const std::string &);
-	void	handle_fileButton();
+	void	handle_fileButton		();
+	void	set_http			(const std::string &);
 private:
 
 	void	Setup ();
@@ -84,7 +85,8 @@ private:
 	nana::combox correction    {*this, nana::rectangle (30, 400, 100, 20)};
 	nana::combox displayMode    {*this, nana::rectangle (140, 400, 100, 20)};
 	nana::combox metricsMode    {*this, nana::rectangle (250, 400, 100, 20)};
-	nana::button fileButton{ *this, nana::rectangle(370, 400, 50, 20) };
+	nana::button fileButton   { *this, nana::rectangle(370, 400, 50, 20) };
+	nana::combox httpButton   { *this, nana::rectangle(430, 400, 50, 20) };
 	SDRunoPlugin_1090Ui & m_parent;
 	IUnoPluginController & m_controller;
 };

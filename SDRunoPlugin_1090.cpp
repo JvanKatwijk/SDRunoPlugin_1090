@@ -5,11 +5,11 @@
 #include	<vector>
 #include	<sstream>
 #include	<chrono>
-
 #include	"SDRunoPlugin_1090.h"
 #include	"SDRunoPlugin_1090Ui.h"
 
 #include	"message-handling.h"
+#include	"http-handler.h"
 //
 #define	IN_SIZE		300
 #define	OUT_SIZE	240
@@ -36,6 +36,7 @@
 	icao_cache      = new icaoCache ();
 	planeList	= nullptr;
 	dumpFilePointer	= nullptr;
+	httpServer	= nullptr;
 
 	for (int i = 0; i < OUT_SIZE; i++) {
 	   float inVal = float (IN_SIZE);
@@ -62,6 +63,7 @@
 	stat_two_bits_fix	= 0;
 	stat_phase_corrected	= 0;
 
+	time (&currentTime);
 	m_controller    -> RegisterStreamProcessor (0, this);
 	m_controller    -> RegisterAudioProcessor (0, this);
 	m_controller	-> SetVfoFrequency (0, 1090000000.0);
@@ -525,11 +527,16 @@ uint32_t j;
  *	interface is enabled.
  */
 	         if (interactive) {
-	            planeList = interactiveReceiveData (planeList, &mm);
+	            time_t newTime;
+	            time (&newTime);
+		        planeList = interactiveReceiveData (planeList, &mm);
 	            planeList = removeStaleAircrafts (planeList,
 	                                                  interactive_ttl,
 	                                                  dumpFilePointer);
-	            m_form. show_text (showPlanes(planeList, metric));
+				if (difftime(newTime, currentTime) > 5) {
+					m_form.show_text(showPlanes(planeList, metric));
+					currentTime = newTime;
+				}
 	         }
 /*
  *	In non-interactive way, display messages on standard output.
@@ -644,5 +651,23 @@ void	SDRunoPlugin_1090::handle_fileButton		() {
 	   fclose (dumpFilePointer);
 	   dumpFilePointer = nullptr;
 	}
+}
+
+void	SDRunoPlugin_1090::set_http		(const std::string &s) {
+	if (s == "http on") {
+		if (httpServer == nullptr) {
+			httpServer = new httpHandler (this, std::string ("d:\gmap.html"));
+			httpServer->start ();
+		}
+	}
+	else {
+		if (httpServer != nullptr)
+			delete httpServer;
+		httpServer = nullptr;
+	}
+}
+
+void	SDRunoPlugin_1090::show_text(const std::string s) {
+	m_form.show_text(s);
 }
 

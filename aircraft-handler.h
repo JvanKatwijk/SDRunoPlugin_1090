@@ -1,6 +1,7 @@
 #
 /*
- *      1090 is based on and contains source code from dump1090
+ *      SDRunoPlugin_1090is based on qt-1090, which on its turn is based
+ *	on thje dump1090 program
  *      Copyright (C) 2012 by Salvatore Sanfilippo <antirez@gmail.com>
  *      all rights acknowledged.
  *
@@ -8,25 +9,23 @@
  *	Jan van Katwijk (J.vanKatwijk@gmail.com)
  *	Lazy Chair Computing
  *
- *	This file is part of the 1090 plugin
- *
- *    1090 is free software; you can redistribute it and/or modify
+ *    SDRunoPlugin_1090 is free software; you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation; either version 2 of the License, or
  *    (at your option) any later version.
  *
- *    1090 is distributed in the hope that it will be useful,
+ *    SDRunoPlugin_1090 is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
  *
  *    You should have received a copy of the GNU General Public License
- *    along with 1090; if not, write to the Free Software
+ *    along with SDRunoPlugin_1090; if not, write to the Free Software
  *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef	__AIRCRAFT_HANDLER__
-#define	__AIRCRAFT_HANDLER__
+#ifndef	__AIRCRAFT_HANDLER_H
+#define	__AIRCRAFT_HANDLER_H
 
 #include	<string>
 #include	<stdint.h>
@@ -61,6 +60,7 @@ public:
 	void	        decodeCPR	(double *, double *);
 	std::string	showPlane (bool metric, time_t now);
 	void		showPlaneonExit	(FILE *);
+	std::string	toJson		();
 //
 	time_t		entryTime;
 	double		lat_in, lon_in;
@@ -70,5 +70,6 @@ public:
 aircraft *interactiveReceiveData	(aircraft *, message *);
 aircraft *removeStaleAircrafts		(aircraft *, int, FILE *);
 std::string	showPlanes		(aircraft *, bool);
+std::string	aircraftsToJson		(aircraft *);
 #endif
 

@@ -1,29 +1,27 @@
 #
 /*
- *      1090 is based on and contains source code from dump1090
+ *	SDRunoPlugin_1090 is based on qt-1090, which on its turn is
+ *	based on dump1090
  *      Copyright (C) 2012 by Salvatore Sanfilippo <antirez@gmail.com>
  *      all rights acknowledged.
  *
- *	1090 Copyright (C) 2018
+ *	Copyright (C) 2018
  *	Jan van Katwijk (J.vanKatwijk@gmail.com)
  *	Lazy Chair Computing
  *
- *	This file is part of the 1090 plugin for SDRuno
- *
- *    1090 is free software; you can redistribute it and/or modify
+ *    SDRunoPlugin_1090 is free software; you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation; either version 2 of the License, or
  *    (at your option) any later version.
  *
- *    1090 is distributed in the hope that it will be useful,
+ *    SDRunoPlugin_1090 is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
  *
  *    You should have received a copy of the GNU General Public License
- *    along with 1090; if not, write to the Free Software
+ *    along with SDRunoPlugin_1090; if not, write to the Free Software
  *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
  */
 #include	"aircraft-handler.h"
 #include	"adsb-constants.h"
@@ -408,3 +406,40 @@ std::string res =
 	return res;
 }
 
+std::string	aircraft::toJson (void) {
+char buf [512];
+
+	(void)snprintf (buf, 512,
+	              "{\"hex\":\"%s\", \"flight\":\"%s\", \"lat\":%f, "
+	              "\"lon\":%f, \"altitude\":%d, \"track\":%d, "
+	              "\"speed\":%d},\n",
+	              hexaddr, flight, lat, lon,
+	              altitude, track, speed);
+	return std::string (buf);
+}
+
+/* Return a description of planes in json. */
+std::string	aircraftsToJson (aircraft *list) {
+aircraft *plane	= list;
+std::string Jsontxt;
+
+	Jsontxt. append ("[\n");
+	locker. lock ();
+	while (plane != NULL) {
+	   if (plane -> lat != 0 && plane -> lon != 0) {
+	      Jsontxt. append (plane -> toJson ());
+	   }
+	   plane = plane -> next;
+	}
+	locker. unlock ();
+//	Remove the final comma if any, and closes the json array. */
+	if (Jsontxt. at (Jsontxt. length () - 2) == ',') {
+//	   Jsontxt. remove (Jsontxt. length () - 1, 1);
+//	   Jsontxt. remove (Jsontxt. length () - 1, 1);
+	   Jsontxt.pop_back();
+	   Jsontxt.pop_back();
+	   Jsontxt. push_back ('\n');
+	}
+	Jsontxt. append ("]\n");
+	return Jsontxt;
+}

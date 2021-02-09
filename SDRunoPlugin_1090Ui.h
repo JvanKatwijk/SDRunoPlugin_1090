@@ -40,6 +40,7 @@ public:
 	void	set_displayMode			(const std::string &);
 	void	set_metricsMode			(const std::string &);
 	void	handle_fileButton		();
+	void	set_http			(const std::string &);
 
 private:
 	

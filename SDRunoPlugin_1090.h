@@ -20,6 +20,8 @@
 #include	"icao-cache.h"
 #include	"aircraft-handler.h"
 #include	<stdio.h>
+#include	<time.h>
+class		httpHandler;
 
 class SDRunoPlugin_1090 : public IUnoPlugin,
 	                   public IUnoStreamProcessor,
@@ -45,17 +47,20 @@ public:
 	virtual void HandleEvent(const UnoEvent& ev) override;
 
 //      going down:
-	void	show_validPreambles	        (int n);
-	void	show_goodCrc	        	(int n);
-	void	show_nrfixed	        	(int n);
-	void	show_single_bit_fixed	        (int n);
-	void	show_two_bit_fixed	        (int n);
+	void	        show_validPreambles	        (int n);
+	void	        show_goodCrc	        	(int n);
+	void	        show_nrfixed	        	(int n);
+	void	        show_single_bit_fixed	        (int n);
+	void	        show_two_bit_fixed	        (int n);
+	void	        show_text                   (const std::string);
 //
 //	coming up
-	void	set_correction	        	(const std::string &);
-	void	set_displayMode	        	(const std::string &);
-	void	set_metricsMode	        	(const std::string &);
-	void	handle_fileButton		();
+	void	        set_correction	        	(const std::string &);
+	void	        set_displayMode	        	(const std::string &);
+	void	        set_metricsMode	        	(const std::string &);
+	void	        handle_fileButton		();
+	void	        set_http			(const std::string &);
+	aircraft*       planeList;
 private:
 	std::atomic<bool>	running;
 	IUnoPluginController	*m_controller;
@@ -76,8 +81,10 @@ private:
 	int	                centerFrequency;
 	int	                selectedFrequency;
 
+	httpHandler		*httpServer;
 	int	                data_len;
 
+	time_t			currentTime;
 	void	        	detectModeS	(uint16_t*, uint32_t);
 	uint16_t	        *magnitudeVector;
 	icaoCache	        *icao_cache;
@@ -87,7 +94,7 @@ private:
 	FILE			*dumpFilePointer;
 	bool	                metric;         /* Use metric units. */
 	int	                interactive_ttl;   /* Interactive mode: TTL before deletion. */
-	aircraft	        *planeList;
+
 	long long	        interactive_last_update;  /* Last screen update in millisecond */
 	int	                table [32];
 	void	        	update_table	(int16_t, int);

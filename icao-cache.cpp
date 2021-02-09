@@ -1,7 +1,7 @@
 #
 /*
- *
- *      qt-1090 is based on and contains source code from dump1090
+ *	SDRunoPlugin_1090 is based on qt-1090, which on its turn is
+ *	based on dump1090
  *      Copyright (C) 2012 by Salvatore Sanfilippo <antirez@gmail.com>
  *      all rights acknowledged.
  *
@@ -9,32 +9,29 @@
  *	Jan van Katwijk (J.vanKatwijk@gmail.com)
  *	Lazy Chair Computing
  *
- *	This file is part of the qt-1090
- *
- *    qt-1090 is free software; you can redistribute it and/or modify
+ *    SDRunoPlugin_1090 is free software; you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation; either version 2 of the License, or
  *    (at your option) any later version.
  *
- *    qt-1090 is distributed in the hope that it will be useful,
+ *    SDRunoPlugin_1090 is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
  *
  *    You should have received a copy of the GNU General Public License
- *    along with qt-1090; if not, write to the Free Software
+ *    along with SDRunoPlugin_1090; if not, write to the Free Software
  *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 #include	"icao-cache.h"
 #include	<stdio.h>
 #include	<string.h>
 
-	icaoCache::icaoCache (void) {
+	icaoCache::icaoCache () {
 }
 
-	icaoCache::~icaoCache (void) {
+	icaoCache::~icaoCache () {
 }
-
 
 /*	Hash the ICAO address to index our cache of ICAO_CACHE_LEN
  *	elements, that is assumed to be a power of two.
