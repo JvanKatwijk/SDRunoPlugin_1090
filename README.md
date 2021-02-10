@@ -26,8 +26,8 @@ The minimal GUI of the plugin is self-expanatory, only a few buttons.
    - interactive mode - showing the list of "visible" planes;
  * the metric can be chosen;
  * a file can be selected to dump some info on passing planes
- * a choice can be made to display the bplanes on a map (http on)
-
+ * a choice can be made to display the bplanes on a map (http on) using
+   port 8080.
 
 The plugin will - when started - try to set the frequency on 1090 MHz,
 Note however, that some planes use frequencies with an offset of up to
@@ -40,7 +40,7 @@ under the same license
 ----------------------------------------------------------------------------
 ----------------------------------------------------------------------------
 
-	opyright (C) 2018
+	Copyright (C) 2020
  	Jan van Katwijk (J.vanKatwijk@gmail.com)
  	Lazy Chair Computing
 

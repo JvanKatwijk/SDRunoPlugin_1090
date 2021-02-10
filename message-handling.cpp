@@ -1,8 +1,12 @@
 #
 /*
- *      plugin 1090 is based on and contains source code from dump1090
+ *	SDRunoPlugin_1090 is based on and contains source code from dump1090
  *      Copyright (C) 2012 by Salvatore Sanfilippo <antirez@gmail.com>
  *      all rights acknowledged.
+ *	The decoding - i.e. using 2400 rather than 2000 samples/millesecond
+ *	is based on Oliver Jowett's work.
+ *	The understanding of it all is largely due to
+ *	Junzi Shun's "the 1090mhz riddle"
  *
  *	Copyright (C) 2018
  *	Jan van Katwijk (J.vanKatwijk@gmail.com)
@@ -26,8 +30,6 @@
 #include        <math.h>
 #include	"message-handling.h"
 #include	"icao-cache.h"
-//#include	"aircraft-handler.h"
-//#include	"qt-1090.h"
 #include	"adsb-constants.h"
 
 static
@@ -167,7 +169,7 @@ uint32_t crc2;
 }
 
 /*
- *	This function gets prints the "current" message on the screen
+ *	This function prints the "current" message on the screen
  *	in a human readable format.
  */
 const
@@ -264,23 +266,23 @@ uint8_t aux [LONG_MSG_BITS / 8];
 // For more info: http://en.wikipedia.org/wiki/Gillham_code
 //
 static int decodeID13Field (int ID13Field) {
-    int hexGillham = 0;
+int hexGillham = 0;
 
-    if (ID13Field & 0x1000) {hexGillham |= 0x0010;} // Bit 12 = C1
-    if (ID13Field & 0x0800) {hexGillham |= 0x1000;} // Bit 11 = A1
-    if (ID13Field & 0x0400) {hexGillham |= 0x0020;} // Bit 10 = C2
-    if (ID13Field & 0x0200) {hexGillham |= 0x2000;} // Bit  9 = A2
-    if (ID13Field & 0x0100) {hexGillham |= 0x0040;} // Bit  8 = C4
-    if (ID13Field & 0x0080) {hexGillham |= 0x4000;} // Bit  7 = A4
-  //if (ID13Field & 0x0040) {hexGillham |= 0x0800;} // Bit  6 = X  or M 
-    if (ID13Field & 0x0020) {hexGillham |= 0x0100;} // Bit  5 = B1 
-    if (ID13Field & 0x0010) {hexGillham |= 0x0001;} // Bit  4 = D1 or Q
-    if (ID13Field & 0x0008) {hexGillham |= 0x0200;} // Bit  3 = B2
-    if (ID13Field & 0x0004) {hexGillham |= 0x0002;} // Bit  2 = D2
-    if (ID13Field & 0x0002) {hexGillham |= 0x0400;} // Bit  1 = B4
-    if (ID13Field & 0x0001) {hexGillham |= 0x0004;} // Bit  0 = D4
+	if (ID13Field & 0x1000) {hexGillham |= 0x0010;} // Bit 12 = C1
+	if (ID13Field & 0x0800) {hexGillham |= 0x1000;} // Bit 11 = A1
+	if (ID13Field & 0x0400) {hexGillham |= 0x0020;} // Bit 10 = C2
+	if (ID13Field & 0x0200) {hexGillham |= 0x2000;} // Bit  9 = A2
+	if (ID13Field & 0x0100) {hexGillham |= 0x0040;} // Bit  8 = C4
+	if (ID13Field & 0x0080) {hexGillham |= 0x4000;} // Bit  7 = A4
+	//if (ID13Field & 0x0040) {hexGillham |= 0x0800;} // Bit  6 = X  or M 
+	if (ID13Field & 0x0020) {hexGillham |= 0x0100;} // Bit  5 = B1 
+	if (ID13Field & 0x0010) {hexGillham |= 0x0001;} // Bit  4 = D1 or Q
+	if (ID13Field & 0x0008) {hexGillham |= 0x0200;} // Bit  3 = B2
+	if (ID13Field & 0x0004) {hexGillham |= 0x0002;} // Bit  2 = D2
+	if (ID13Field & 0x0002) {hexGillham |= 0x0400;} // Bit  1 = B4
+	if (ID13Field & 0x0001) {hexGillham |= 0x0004;} // Bit  0 = D4
 
-    return (hexGillham);
+	return (hexGillham);
 }
 /*
  *	Decode the 13 bit AC altitude field (in DF 20 and others).

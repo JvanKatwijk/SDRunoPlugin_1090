@@ -1,9 +1,12 @@
 #
 /*
- *	SDRunoPlugin_1090 is based on qt-1090, which on its turn is
- *	based on dump1090
+ *	SDRunoPlugin_1090 is based on and contains source code from dump1090
  *      Copyright (C) 2012 by Salvatore Sanfilippo <antirez@gmail.com>
  *      all rights acknowledged.
+ *	The decoding - i.e. using 2400 rather than 2000 samples/millesecond
+ *	is based on Oliver Jowett's work.
+ *	The understanding of it all is largely due to
+ *	Junzi Shun's "the 1090mhz riddle"
  *
  *	Copyright (C) 2018
  *	Jan van Katwijk (J.vanKatwijk@gmail.com)

@@ -86,7 +86,7 @@ private:
 	nana::combox displayMode    {*this, nana::rectangle (140, 400, 100, 20)};
 	nana::combox metricsMode    {*this, nana::rectangle (250, 400, 100, 20)};
 	nana::button fileButton   { *this, nana::rectangle(370, 400, 50, 20) };
-	nana::combox httpButton   { *this, nana::rectangle(430, 400, 50, 20) };
+	nana::combox httpButton   { *this, nana::rectangle(430, 400, 100, 20) };
 	SDRunoPlugin_1090Ui & m_parent;
 	IUnoPluginController & m_controller;
 };
