@@ -115,7 +115,7 @@
 	SDRunoPlugin_1090::~SDRunoPlugin_1090 () {
 	running. store (false);
 	if (dumpFilePointer != nullptr)
-		fclose(dumpFilePointer);
+	   fclose(dumpFilePointer);
 	dumpFilePointer = nullptr;
 	m_worker -> join ();
 	m_controller    -> UnregisterStreamProcessor (0, this);
@@ -166,7 +166,7 @@ uint16_t vec [OUT_SIZE];
 	            int inpBase		= mapTable_int [j];
 	            float inpRatio	= mapTable_float [j];
 	            vec [j] = convBuffer [inpBase + 1] * inpRatio +
-                          convBuffer [inpBase] * (1 - inpRatio);
+                                 convBuffer [inpBase] * (1 - inpRatio);
 	         }
 	         _I_Buffer . putDataIntoBuffer (vec, OUT_SIZE);
 	         convBuffer [0] = convBuffer [convBuffer. size () - 1];
@@ -234,15 +234,19 @@ uint16_t buffer [DATA_LEN / 2];
 static inline int slice_phase0(uint16_t *m) {
 	return 5 * m[0] - 3 * m[1] - 2 * m[2];
 }
+
 static inline int slice_phase1(uint16_t *m) {
 	return 4 * m[0] - m[1] - 3 * m[2];
 }
+
 static inline int slice_phase2(uint16_t *m) {
 	return 3 * m[0] + m[1] - 4 * m[2];
 }
+
 static inline int slice_phase3(uint16_t *m) {
 	return 2 * m[0] + 3 * m[1] - 5 * m[2];
 }
+
 static inline int slice_phase4(uint16_t *m) {
 	return m[0] + 5 * m[1] - 5 * m[2] - m[3];
 }
@@ -682,20 +686,23 @@ void	SDRunoPlugin_1090::handle_fileButton		() {
 }
 
 void	SDRunoPlugin_1090::set_http		(const std::string &s) {
+char *home	= getenv ("HOMEPATH");
+std::string theMap	= std::string (home) + std::string ("\\Documents\\gmap.html");
 	if (s == "http on") {
-		if (httpServer == nullptr) {
-			httpServer = new httpHandler (this, std::string ("d:\gmap.html"));
-			httpServer->start ();
-		}
+	   if (httpServer == nullptr) {
+//	      httpServer = new httpHandler (this, std::string ("d:\gmap.html"));
+	      httpServer = new httpHandler (this, theMap);
+	      httpServer->start ();
+	   }
 	}
 	else {
-		if (httpServer != nullptr)
-			delete httpServer;
-		httpServer = nullptr;
+	   if (httpServer != nullptr)
+	      delete httpServer;
+	   httpServer = nullptr;
 	}
 }
 
-void	SDRunoPlugin_1090::show_text(const std::string s) {
+void	SDRunoPlugin_1090::show_text (const std::string s) {
 	m_form.show_text(s);
 }
 
